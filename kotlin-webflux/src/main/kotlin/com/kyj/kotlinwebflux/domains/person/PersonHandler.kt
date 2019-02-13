@@ -19,8 +19,6 @@ data class PersonHandler(val personService: PersonService) {
     personService.save(serverRequest.bodyToMono())
       .flatMap {
         ServerResponse.created(URI.create("/person/${it.id}")).build()
-      }.doOnError {
-        ServerResponse.badRequest()
       }
 
   fun findAll(serverRequest: ServerRequest) = ServerResponse.ok().body(personService.findAll(), Person::class.java)
