@@ -9,7 +9,7 @@ data class Person (
   var id: Long? = null,
   var name: String,
   @ManyToOne(optional = false, fetch = FetchType.LAZY)
-//  @JoinColumn(name = "team_id")
+  @JoinColumn(name = "team_id")
   var team: Team? = null
 )
 
