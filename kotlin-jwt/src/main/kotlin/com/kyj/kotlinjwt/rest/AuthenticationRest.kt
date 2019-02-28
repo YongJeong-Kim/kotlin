@@ -21,7 +21,8 @@ class AuthenticationRest(
   @PostMapping("/login")
   fun login(@RequestBody ar: AuthRequest): Mono<ResponseEntity<AuthResponse>> {
     return userService.findByUsername(ar.username).map {
-      if (it.password.equals(pbkdf2Encoder.encode(ar.password))) {
+      val encodedPassword = pbkdf2Encoder.encode(ar.password)
+      if (it.password.equals(encodedPassword)) {
         ResponseEntity.ok(AuthResponse(jwtUtil.generateToken(it)))
       } else {
         ResponseEntity.status(HttpStatus.UNAUTHORIZED).build<AuthResponse>()
