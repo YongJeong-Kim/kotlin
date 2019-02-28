@@ -1,0 +1,17 @@
+myInfo:
+  password:
+    encoder:
+      secret: mysecret
+      iteration: 33
+      keylength: 256
+  jjwt:
+    secret: D3IEqakv8d0HE1zdi2WBjfE1Q9vCoX0UdP03Hqz6aBf7D9En7D93DWxfb39RegiE
+    expiration: 28800
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: mongodemo
+  jackson:
+    default-property-inclusion: NON_NULL
