@@ -26,6 +26,7 @@ class WebSecurityConfig(
       .securityContextRepository(securityContextRepository)
       .authorizeExchange()
 //      .pathMatchers("/user/**").permitAll()
+//      .pathMatchers("/api/users").permitAll()
       .pathMatchers(HttpMethod.OPTIONS).permitAll()
       .pathMatchers("/error/401").permitAll()
       .pathMatchers("/login").permitAll()

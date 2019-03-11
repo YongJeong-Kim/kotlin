@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository
 import reactor.core.publisher.Mono
 
 @Repository
-class UserRepository(val template: ReactiveMongoTemplate) {
+class UserRepositoryCustom(val template: ReactiveMongoTemplate) {
   fun findById(id: String) = template.findById<User>(id)
   fun findByUsername(username: String) = template.findOne<User>(Query(where("username").isEqualTo(username)))
   fun save(user: Mono<User>) = template.save(user)

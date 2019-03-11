@@ -9,10 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails
 
 @Document
 data class User(
-  @Indexed(unique = true)
   private var username: String,
   private var password: String,
   var roles: List<Role>? = listOf(Role.ROLE_USER),
+  var avatar: String?,
   var enabled: Boolean = true
 ): UserDetails {
   override fun isEnabled(): Boolean {
