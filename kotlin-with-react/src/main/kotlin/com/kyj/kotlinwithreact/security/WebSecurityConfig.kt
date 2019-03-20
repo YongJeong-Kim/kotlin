@@ -30,6 +30,7 @@ class WebSecurityConfig(
       .pathMatchers(HttpMethod.OPTIONS).permitAll()
       .pathMatchers("/error/401").permitAll()
       .pathMatchers("/login").permitAll()
+//      .pathMatchers("/").permitAll()
       .anyExchange().authenticated()
       .and()
       .exceptionHandling().authenticationEntryPoint(RedirectServerAuthenticationEntryPoint("/error/401"))

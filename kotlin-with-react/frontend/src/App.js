@@ -1,43 +1,33 @@
 import React, { Component, Suspense } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import axios from 'axios';
 
-const Example = React.lazy(() => import('./components/Example'));
 const Login = React.lazy(() => import('./components/Login'));
-const Index = React.lazy(() => import('./components/index'));
+const Main = React.lazy(() => import('./components/Main'));
 
-class App extends Component {
+export default class App extends Component {
+  state = {
+    token: '',
+  };
+  componentWillMount = () => {
+    this.setState({ token: window.localStorage.accessToken });
+    console.log(window.localStorage.accessToken);
+    axios.get('/api/checkExpiredToken', {
+      headers: {
+        Authorization: window.localStorage.accessToken,
+      },
+    }).then((response) => {
+      console.log('then')
+    }).catch(e => {
+      if (e.response.status === 401) this.setState({ token: '' })
+    })
+  };
+
   render() {
     return (
       <Suspense fallback={<div>Loading...</div>}>
-        <Index />
+        { this.state.token === '' && <Login/> }
+        { this.state.token !== '' && <Main /> }
       </Suspense>
     );
-     {/* <div className="App">
-        <Suspense fallback={<div>Loading...</div>}>
-          <Login />
-        </Suspense>
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Example />
-        </Suspense>
-      </div>*/}
-
-
   }
 }
-
-export default App;

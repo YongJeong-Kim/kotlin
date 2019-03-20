@@ -3,12 +3,11 @@ package com.kyj.kotlinwithreact.security
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
-import java.security.spec.InvalidKeySpecException
 import java.security.NoSuchAlgorithmException
+import java.security.spec.InvalidKeySpecException
 import java.util.*
-import javax.crypto.spec.PBEKeySpec
 import javax.crypto.SecretKeyFactory
-
+import javax.crypto.spec.PBEKeySpec
 
 
 @Component
@@ -17,14 +16,14 @@ class PBKDF2Encoder(
   val secret: String,
   @Value("\${myInfo.password.encoder.iteration}")
   val iteration: Int,
-  @Value("\${myInfo.password.encoder.keylength}")
-  val keylength: Int
+  @Value("\${myInfo.password.encoder.keyLength}")
+  val keyLength: Int
 ): PasswordEncoder {
   override fun encode(rawPassword: CharSequence?): String {
     try {
 //      val result = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512")
       val result = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512")
-        .generateSecret(PBEKeySpec(rawPassword.toString().toCharArray(), secret.toByteArray(), iteration, keylength))
+        .generateSecret(PBEKeySpec(rawPassword.toString().toCharArray(), secret.toByteArray(), iteration, keyLength))
         .encoded
       return Base64.getEncoder().encodeToString(result)
     } catch (ex: NoSuchAlgorithmException) {
@@ -35,6 +34,5 @@ class PBKDF2Encoder(
   }
 
   override fun matches(rawPassword: CharSequence?, encodedPassword: String?): Boolean =
-    encode(rawPassword).equals(encodedPassword)
-
+    encode(rawPassword) === encodedPassword
 }

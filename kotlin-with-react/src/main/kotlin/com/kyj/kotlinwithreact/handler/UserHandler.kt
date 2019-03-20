@@ -32,7 +32,7 @@ class UserHandler(
     return user.flatMap {
       userService.findByUsername(it.username).toMono().flatMap {db ->
         if (db.password == pbkdf2Encoder.encode(it.password))
-          ServerResponse.ok().body(BodyInserters.fromObject(AuthResponse(jwtUtil.generateToken(it))))
+          ServerResponse.ok().body(BodyInserters.fromObject(AuthResponse(jwtUtil.generateToken(it), it)))
         else
           ServerResponse.status(HttpStatus.UNAUTHORIZED).build()
       }
@@ -41,5 +41,18 @@ class UserHandler(
 
   fun unauthorized(serverRequest: ServerRequest) =
     ServerResponse.status(HttpStatus.UNAUTHORIZED).body(BodyInserters.fromObject("unauthorized"))
+
+  fun checkExpiredToken(serverRequest: ServerRequest): Mono<ServerResponse> {
+    val authHeader = serverRequest.headers().header("Authorization").toString()
+    val isTokenExpired = jwtUtil.isTokenExpired(authHeader.substring(7))
+
+    isTokenExpired?.let {
+      return if (it)
+        ServerResponse.status(HttpStatus.UNAUTHORIZED).build()
+      else ServerResponse.ok().build()
+    } ?: run {
+      return ServerResponse.status(HttpStatus.UNAUTHORIZED).build()
+    }
+  }
 }
 

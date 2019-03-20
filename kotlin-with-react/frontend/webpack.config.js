@@ -1,13 +1,13 @@
 var webpack = require('webpack');
-var path = require('path')
+var path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   // context: path.resolve(__dirname, 'my'),
- //   entry: './src/index.js',
+ //   entry: './src/Main
 	entry: {
-		index: './src/index.js',
-		// login: './src/main/js/components/login/index.js',
+		index: './src/index.js'
+		// login: './src/main/js/components/login/Main
 	},
   output: {
 		// path: __dirname + '/public/',

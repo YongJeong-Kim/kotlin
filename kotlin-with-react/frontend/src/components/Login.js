@@ -16,6 +16,8 @@ import blue from '@material-ui/core/colors/blue';
 import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import axios from "axios";
 
+import { setLogInUser } from '../actions/userAction'
+
 const styles = theme => ({
   container: {
     // display: 'flex',
@@ -82,30 +84,9 @@ class Login extends Component {
   handleChangeName = event => {
     this.setState({ username: event.target.value });
   };
-
   handleChangePassword = event => {
     this.setState({ password: event.target.value });
   };
-
-  componentWillMount() {
-   /* const info = {
-      username: 'user22',
-      password: 'user'
-    };
-    axios.post('http://localhost:3000/login', info)
-	    .then((response) => {
-	      // window.location = '/';
-        console.log(response)
-        new Headers().append("AUTHORIZATION", response.data.token)
-        this.setState({
-          token: response.data.token
-        })
-	    })
-      .catch(e => {
-	      console.log(e)
-      });*/
-
-  }
   handleTest = () => {
     axios.get('http://localhost:3000/api/users', {
       headers: {
@@ -127,6 +108,10 @@ class Login extends Component {
       .then(response => {
         window.localStorage.accessToken = 'Bearer ' + response.data.token
         // localStorage.setItem("token", 'Bearer ' + response.data.token)
+        // this.props.history.push('/');
+        window.location.href = '/';
+        console.log('success')
+        setLogInUser(response.data.user)
       }).catch(e => {
 
       })
@@ -170,13 +155,7 @@ class Login extends Component {
                 />
               </MuiThemeProvider>
             </div>
-
             <div className={classes.row}>
-           {/*   <input
-                  className={classes.input}
-                  id="raised-button-file"
-                  multiple
-                  type="submit" />*/}
               <label htmlFor="raised-button-file" >
                 <Button onClick={this.handleLogin} component="span" style={styleButton} className={classes.button}>
                   Login

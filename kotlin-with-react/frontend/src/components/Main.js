@@ -10,9 +10,16 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
+import { Switch, Route } from 'react-router-dom'
+import { connect } from 'react-redux'
 
+import { AppBarButton } from './AppBarButton'
+import BoardMain  from './boards/Main'
+import MainMenu from './MainMenu'
 
-const MainMenu = React.lazy(() => import('./MainMenu'))
+import userAction from '../actions/userAction'
+// const MainMenu = React.lazy(() => import('./MainMenu'));
+// const MainContent = React.lazy(() => import('./MainContent'));
 
 const drawerWidth = 240;
 
@@ -33,6 +40,9 @@ const styles = theme => ({
     },
     backgroundColor: blue[500],
   },
+  flex: {
+    flex: 1,
+  },
   menuButton: {
     marginRight: 20,
     [theme.breakpoints.up('sm')]: {
@@ -52,19 +62,25 @@ const styles = theme => ({
   },
 });
 
-class ResponsiveDrawer extends React.Component {
+// @connect((store) => {
+//   return {
+//     user: store.login.user,
+//   }
+// })
+class Main extends React.Component {
   state = {
     mobileOpen: false,
   };
-
+  componentWillMount = () => {
+    console.log('eie')
+  };
   handleDrawerToggle = () => {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
   };
 
-
   render() {
     const { classes, theme } = this.props;
-
+    console.log(this.props)
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -78,9 +94,12 @@ class ResponsiveDrawer extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" color="inherit" noWrap>
+            <Typography variant="h6" color="inherit" noWrap className={classes.flex}>
               Responsive drawer
             </Typography>
+            <div>
+              <AppBarButton />
+            </div>
           </Toolbar>
         </AppBar>
         <nav className={classes.drawer}>
@@ -113,37 +132,17 @@ class ResponsiveDrawer extends React.Component {
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Typography paragraph>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent
-            elementum facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in
-            hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id interdum
-            velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing.
-            Amet nisl suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod quis
-            viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.
-            Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus
-            at augue. At augue eget arcu dictum varius duis at consectetur lorem. Velit sed
-            ullamcorper morbi tincidunt. Lorem donec massa sapien faucibus et molestie ac.
-          </Typography>
-          <Typography paragraph>
-            Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
-            facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
-            tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet volutpat
-            consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus
-            sed vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in.
-            In hendrerit gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-            et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique
-            sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo
-            viverra maecenas accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam
-            ultrices sagittis orci a.
-          </Typography>
+          <Switch>
+            <Route path={'/board'} component={BoardMain} />
+            <Route exact component={BoardMain} />
+          </Switch>
         </main>
       </div>
     );
   }
 }
 
-ResponsiveDrawer.propTypes = {
+Main.propTypes = {
   classes: PropTypes.object.isRequired,
   // Injected by the documentation to work in an iframe.
   // You won't need it on your project.
@@ -151,4 +150,4 @@ ResponsiveDrawer.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(ResponsiveDrawer);
+export default withStyles(styles, { withTheme: true })(Main);
