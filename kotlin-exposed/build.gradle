@@ -12,10 +12,11 @@ sourceCompatibility = '1.8'
 
 repositories {
   mavenCentral()
+  jcenter()
 }
 
 dependencies {
-//  implementation 'org.jetbrains.exposed:exposed:0.13.3'
+  implementation 'org.jetbrains.exposed:exposed:0.13.3'
   implementation 'org.springframework.boot:spring-boot-starter-webflux'
   implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
   implementation 'org.jetbrains.kotlin:kotlin-reflect'
