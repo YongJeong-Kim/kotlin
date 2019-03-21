@@ -11,13 +11,11 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 import { Switch, Route } from 'react-router-dom'
-import { connect } from 'react-redux'
 
 import { AppBarButton } from './AppBarButton'
 import BoardMain  from './boards/Main'
 import MainMenu from './MainMenu'
 
-import userAction from '../actions/userAction'
 // const MainMenu = React.lazy(() => import('./MainMenu'));
 // const MainContent = React.lazy(() => import('./MainContent'));
 

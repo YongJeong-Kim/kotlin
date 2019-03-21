@@ -16,8 +16,6 @@ import blue from '@material-ui/core/colors/blue';
 import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import axios from "axios";
 
-import { setLogInUser } from '../actions/userAction'
-
 const styles = theme => ({
   container: {
     // display: 'flex',
@@ -111,7 +109,6 @@ class Login extends Component {
         // this.props.history.push('/');
         window.location.href = '/';
         console.log('success')
-        setLogInUser(response.data.user)
       }).catch(e => {
 
       })
