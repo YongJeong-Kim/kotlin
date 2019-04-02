@@ -1,20 +1,25 @@
 package com.kyj.kotlinwithreact
 
+import com.kyj.kotlinwithreact.domain.Board
 import com.kyj.kotlinwithreact.domain.User
 import com.kyj.kotlinwithreact.security.PBKDF2Encoder
 import com.kyj.kotlinwithreact.security.model.Role
+import com.kyj.kotlinwithreact.service.BoardService
 import com.kyj.kotlinwithreact.service.UserService
 import org.springframework.data.mongodb.core.ReactiveMongoOperations
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
 import reactor.core.publisher.toMono
+import java.util.*
 import javax.annotation.PostConstruct
 
 @Component
 class Init(
   val operations: ReactiveMongoOperations,
   val pbkdF2Encoder: PBKDF2Encoder,
-  val userService: UserService) {
+  val userService: UserService,
+  val boardService: BoardService
+) {
   @PostConstruct
   fun init() {
     operations.collectionExists("user").subscribe {
@@ -25,6 +30,29 @@ class Init(
           User("user", pbkdF2Encoder.encode("user"), listOf(Role.ROLE_USER), avatarEncoded ),
           User("admin", pbkdF2Encoder.encode("admin"), listOf(Role.ROLE_ADMIN), avatarEncoded ))
         persons.map(User::toMono).map(userService::createUser).map(Mono<User>::subscribe)
+      }
+    }
+    operations.collectionExists("board").subscribe {
+      if (it) println("exist collection board")
+      else operations.createCollection("board").subscribe {
+        val boards = listOf(
+          Board(UUID.randomUUID().toString(), "user", "test subject1", "test content1", Date(), Date()),
+          Board(UUID.randomUUID().toString(), "user", "test subject2", "test content2", Date(), Date()),
+          Board(UUID.randomUUID().toString(), "user", "test subject3", "test content3", Date(), Date()),
+          Board(UUID.randomUUID().toString(), "user", "test subject4", "test content4", Date(), Date()),
+          Board(UUID.randomUUID().toString(), "user", "test subject5", "test content5", Date(), Date()),
+          Board(UUID.randomUUID().toString(), "user", "test subject6", "test content6", Date(), Date()),
+          Board(UUID.randomUUID().toString(), "user", "test subject7", "test content7", Date(), Date()),
+          Board(UUID.randomUUID().toString(), "user", "test subject8", "test content8", Date(), Date()),
+          Board(UUID.randomUUID().toString(), "user", "test subject9", "test content9", Date(), Date()),
+          Board(UUID.randomUUID().toString(), "user", "test subject10", "test content10", Date(), Date()),
+          Board(UUID.randomUUID().toString(), "user", "test subject11", "test content11", Date(), Date()),
+          Board(UUID.randomUUID().toString(), "user", "test subject12", "test content12", Date(), Date()),
+          Board(UUID.randomUUID().toString(), "user", "test subject13", "test content13", Date(), Date()),
+          Board(UUID.randomUUID().toString(), "user", "test subject14", "test content14", Date(), Date()),
+          Board(UUID.randomUUID().toString(), "user", "test subject15", "test content15", Date(), Date())
+        )
+        boards.map(Board::toMono).map(boardService::createBoard).map(Mono<Board>::subscribe)
       }
     }
   }
