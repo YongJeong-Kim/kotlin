@@ -7,8 +7,9 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'mobx-react'
 import LoginStore from './store/LoginStore'
 
+const loginStore = new LoginStore();
 ReactDOM.render(
-  <Provider loginStore={LoginStore}>
+  <Provider loginStore={loginStore}>
     <BrowserRouter>
       <App />
     </BrowserRouter>

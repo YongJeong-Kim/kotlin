@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
-import {MuiThemeProvider, createMuiTheme, withStyles} from '@material-ui/core/styles';
+import { MuiThemeProvider, createMuiTheme, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -16,6 +16,8 @@ import LastPageIcon from '@material-ui/icons/LastPage';
 import TableHead from '@material-ui/core/TableHead';
 import Button from '@material-ui/core/Button'
 import blue from '@material-ui/core/colors/blue';
+import axios from 'axios'
+import { observer, inject } from 'mobx-react'
 
 const actionsStyles = theme => ({
   root: {
@@ -36,6 +38,7 @@ class TablePaginationActions extends Component {
 
   handleNextButtonClick = event => {
     this.props.onChangePage(event, this.props.page + 1);
+    console.log(this.props.page)
   };
 
   handleLastPageButtonClick = event => {
@@ -96,12 +99,6 @@ const TablePaginationActionsWrapped = withStyles(actionsStyles, { withTheme: tru
   TablePaginationActions,
 );
 
-let counter = 0;
-function createData(name, calories, fat) {
-  counter += 1;
-  return { id: counter, name, calories, fat };
-}
-
 const styles = theme => ({
   root: {
     width: '100%',
@@ -132,55 +129,63 @@ const theme = createMuiTheme({
   typography: { useNextVariants: true },
 });
 
+@inject('loginStore')
+@observer
 class Vacation extends Component {
   state = {
-    rows: [
-      createData('Cupcake', 305, 3.7),
-      createData('Donut', 452, 25.0),
-      createData('Eclair', 262, 16.0),
-      createData('Frozen yoghurt', 159, 6.0),
-      createData('Gingerbread', 356, 16.0),
-      createData('Honeycomb', 408, 3.2),
-      createData('Ice cream sandwich', 237, 9.0),
-      createData('Jelly Bean', 375, 0.0),
-      createData('KitKat', 518, 26.0),
-      createData('Lollipop', 392, 0.2),
-      createData('Marshmallow', 318, 0),
-      createData('Nougat', 360, 19.0),
-      createData('Oreo', 437, 18.0),
-    ].sort((a, b) => (a.calories < b.calories ? -1 : 1)),
-    page: 0,
-    rowsPerPage: 5,
+    data: {},
+    rowsPerPageOptions: [5, 10, 25],
   };
   componentWillMount = () => {
-    counter = 0
+    console.log(this.props.loginStore.accessToken);
+    this.findVacation({
+      size: this.state.rowsPerPageOptions[0],
+    });
   };
 
+  findVacation = params => {
+    axios.get("/api/board/vacation", {
+      headers: {
+        Authorization: this.props.loginStore.accessToken
+      },
+      params,
+    }).then((response) => {
+      this.setState({ data: response.data })
+    }).catch(e => {
+      console.log('error find board')
+    })
+  };
   handleChangePage = (event, page) => {
-    this.setState({ page });
+    this.findVacation({
+      page,
+      size: this.state.data.size,
+    });
   };
   handleChangeRowsPerPage = event => {
-    this.setState({ page: 0, rowsPerPage: event.target.value });
+    this.findVacation({
+      number: 0,
+      size: event.target.value,
+    });
   };
   handleRowClick = (event, row) => {
     // this.props.history.push(`/board/휴가/:${id}`)
     this.props.history.push({
-      pathname: `/board/board2/${row.id}`,
+      pathname: `/게시판/휴가/${row.id}`,
       // search: '?query=abc'
       state: { id: row.id },
     });
-    console.log(`/board/휴가/${row.id}`)
+    console.log(`/게시판/휴가/${row.id}`)
   };
   handlePost = () => {
-    this.props.history.push('/board/board2/post')
+    this.props.history.push('/게시판/휴가/글쓰기')
   };
 
   render() {
     const { classes, match } = this.props;
-    const { rows, rowsPerPage, page } = this.state;
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-    console.log(rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage))
+    const { data, rowsPerPageOptions } = this.state;
+    const emptyRows = data.size - Math.min(data.size, data.totalElements - data.number * data.size);
     console.log(match)
+
     return (
       <>
         <MuiThemeProvider theme={theme}>
@@ -197,13 +202,13 @@ class Vacation extends Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
+                {Object.entries(data).length !== 0 && data.content.map(row => (
                   <TableRow key={row.id} hover onClick={event => this.handleRowClick(event, row)}>
                     <TableCell component="th" scope="row">
-                      {row.name}
+                      {row.subject}
                     </TableCell>
-                    <TableCell align="right">{row.calories}</TableCell>
-                    <TableCell align="right">{row.fat}</TableCell>
+                    <TableCell align="right">{row.username}</TableCell>
+                    <TableCell align="right">{row.updateDate}</TableCell>
                   </TableRow>
                 ))}
                 {emptyRows > 0 && (
@@ -215,11 +220,11 @@ class Vacation extends Component {
               <TableFooter>
                 <TableRow>
                   <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
+                    rowsPerPageOptions={rowsPerPageOptions}
                     colSpan={3}
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
+                    count={data.totalElements === undefined ? 0: data.totalElements}
+                    rowsPerPage={data.size === undefined ? 0: data.size}
+                    page={data.number === undefined ? 0: data.number}
                     SelectProps={{
                       native: false,
                     }}

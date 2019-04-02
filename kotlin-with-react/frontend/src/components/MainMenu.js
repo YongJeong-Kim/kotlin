@@ -28,7 +28,7 @@ const linkStyles = {
 };
 
 const menu = [
-  'board1', 'board2', 'board3'
+  'board1', '휴가', 'board3'
 ];
 
 class MainMenu extends Component {
@@ -65,17 +65,17 @@ class MainMenu extends Component {
           ))}
           <ListItem button onClick={this.handleClick}>
             <ListItemIcon><InboxIcon /></ListItemIcon>
-            <ListItemText primary={'Board'} />
+            <ListItemText primary={'게시판'} />
             {this.state.open ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
           <Collapse in={this.state.open} timeout="auto" unmountOnExit>
             {menu.map((text, index) => (
-              <Link to={`/board/${text}`} key={'Board' + index + text} style={linkStyles}>
+              <Link to={`/게시판/${text}`} key={'Board' + index + text} style={linkStyles}>
                 <List component="div" disablePadding>
                   <ListItem button className={classes.nested}>
-                    <ListItemIcon>
+                  {/*  <ListItemIcon>
                       <StarBorder />
-                    </ListItemIcon>
+                    </ListItemIcon>*/}
                     <ListItemText inset primary={text} />
                   </ListItem>
                 </List>

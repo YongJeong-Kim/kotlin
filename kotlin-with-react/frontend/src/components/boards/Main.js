@@ -6,16 +6,12 @@ import Vacation from './Vacation'
 import VacationView from './VacationView'
 import VacationPost from './VacationPost'
 
-export default class Main extends Component {
-  render() {
-    const { match } = this.props;
-    return (
-      <Switch>
-        <Route exact path={`${match.url}/board1`} component={Board} />
-        <Route exact path={`${match.url}/board2`} component={Vacation} />
-        <Route exact path={`${match.url}/board2/1`} component={VacationView} />
-        <Route exact path={`${match.url}/board2/post`} component={VacationPost} />
-      </Switch>
-    );
-  }
-}
+const Main = ({ match }) => (
+  <Switch>
+    <Route exact path={`${match.url}/board1`} component={Board} />
+    <Route exact path={`${match.url}/휴가`} component={Vacation} />
+    <Route exact path={`${match.url}/휴가/1`} component={VacationView} />
+    <Route exact path={`${match.url}/휴가/글쓰기`} component={VacationPost} />
+  </Switch>
+);
+export default Main

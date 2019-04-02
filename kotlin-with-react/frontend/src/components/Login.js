@@ -15,6 +15,8 @@ import LockIcon from '@material-ui/icons/Lock';
 import blue from '@material-ui/core/colors/blue';
 import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import axios from "axios";
+import { inject, observer } from 'mobx-react';
+import { withRouter } from 'react-router-dom'
 
 const styles = theme => ({
   container: {
@@ -73,6 +75,12 @@ const styleButton = {
   background: blue[500],
 };
 
+/*@inject(store => ({
+  accessToken: store.loginStore.accessToken,
+}))*/
+@withRouter
+@inject('loginStore')
+@observer
 class Login extends Component {
   state = {
     username: 'user',
@@ -104,19 +112,23 @@ class Login extends Component {
     };
     axios.post('/login', login)
       .then(response => {
-        window.localStorage.accessToken = 'Bearer ' + response.data.token
+        window.localStorage.accessToken = 'Bearer ' + response.data.token;
         // localStorage.setItem("token", 'Bearer ' + response.data.token)
         // this.props.history.push('/');
-        window.location.href = '/';
-        console.log('success')
+        // this.props.loginStore.setAccessToken('Bearer ' + response.data.token);
+        console.log(this.props.loginStore.accessToken)
+        this.props.loginStore.accessToken = 'Bearer ' + response.data.token;
+        // alert(this.props.loginStore.accessToken);
+        // window.location.href = '/';
+        this.props.handleIsNeedLogin(false);
       }).catch(e => {
-
+        console.log(e)
       })
   };
 
   render() {
     const classes = this.props.classes;
-
+    console.log(this.props)
     return (
       <div className={classes.col}>
         <Button onClick={this.handleTest}>DF</Button>

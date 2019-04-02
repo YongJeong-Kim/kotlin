@@ -1,20 +1,11 @@
-import { decorate, observable, action } from 'mobx'
-import { observer } from 'mobx-react'
+import { observable, action } from 'mobx'
 
-class LoginStore {
-  accessToken = 'qqqaaasss';
-  setAccessToken = accessToken => {
+export default class LoginStore {
+  @observable accessToken = 'default';
+  @action setAccessToken = accessToken => {
     this.accessToken = accessToken;
   };
-  getAccessToken = () => {
-    return this.getAccessToken
+  @action getAccessToken = () => {
+    return this.accessToken
   };
 }
-
-decorate(LoginStore, {
-  accessToken: observable,
-  setAccessToken: action,
-  getAccessToken: action,
-});
-
-export default observer(LoginStore)

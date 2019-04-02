@@ -10,8 +10,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, withRouter } from 'react-router-dom'
 
+import { inject, observer } from 'mobx-react';
 import { AppBarButton } from './AppBarButton'
 import BoardMain  from './boards/Main'
 import MainMenu from './MainMenu'
@@ -60,11 +61,9 @@ const styles = theme => ({
   },
 });
 
-// @connect((store) => {
-//   return {
-//     user: store.login.user,
-//   }
-// })
+@withRouter
+@inject('loginStore')
+@observer
 class Main extends React.Component {
   state = {
     mobileOpen: false,
@@ -78,7 +77,8 @@ class Main extends React.Component {
 
   render() {
     const { classes, theme } = this.props;
-    console.log(this.props)
+    // this.props.loginStore.accessToken = 'qazxxxxxxxxxxx';
+    console.log(this.props.loginStore.accessToken)
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -131,7 +131,7 @@ class Main extends React.Component {
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Switch>
-            <Route path={'/board'} component={BoardMain} />
+            <Route path={'/게시판'} component={BoardMain} />
             <Route exact component={BoardMain} />
           </Switch>
         </main>

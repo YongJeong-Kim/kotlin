@@ -5,6 +5,7 @@ export default class Example extends Component {
   state = {
     content: 'content',
     config: {
+      height: 550,
       toolbarGroups: [{
         "name": "basicstyles",
         "groups": ["basicstyles"]
