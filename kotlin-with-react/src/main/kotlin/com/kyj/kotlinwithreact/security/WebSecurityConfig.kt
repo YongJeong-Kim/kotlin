@@ -13,12 +13,12 @@ import org.springframework.security.web.server.authorization.HttpStatusServerAcc
 
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
-class WebSecurityConfig(
+open class WebSecurityConfig(
   val authenticationManager: AuthenticationManager,
   val securityContextRepository: SecurityContextRepository
 ) {
   @Bean
-  fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain =
+  open fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain =
     http.csrf().disable()
       .formLogin().disable()
       .httpBasic().disable()

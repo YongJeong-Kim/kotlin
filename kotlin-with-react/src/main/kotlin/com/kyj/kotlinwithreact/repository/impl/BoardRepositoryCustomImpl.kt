@@ -13,7 +13,7 @@ import org.springframework.data.repository.support.PageableExecutionUtils
 import reactor.core.publisher.Mono
 import java.util.function.LongSupplier
 
-class BoardRepositoryCustomImpl(
+open class BoardRepositoryCustomImpl(
   val reactiveMongoTemplate: ReactiveMongoTemplate,
   val mongoTemplate: MongoTemplate
 ): BoardRepositoryCustom {

@@ -4,7 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class KotlinWithReactApplication
+open class KotlinWithReactApplication
 
 fun main(args: Array<String>) {
   runApplication<KotlinWithReactApplication>(*args)
