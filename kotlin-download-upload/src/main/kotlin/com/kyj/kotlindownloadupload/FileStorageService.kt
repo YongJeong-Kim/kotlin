@@ -39,7 +39,7 @@ class FileStorageService(val fileStorageProperties: FileStorageProperties) {
     }
   }
 
-  fun loadFileAsResourc(filename: String): Resource {
+  fun loadFileAsResource(filename: String): Resource {
     try {
       val filePath = this.fileStorageLocation.resolve(filename).normalize()
       val resource = UrlResource(filePath.toUri())

@@ -35,7 +35,7 @@ class HomeController(val fileStorageService: FileStorageService) {
 
   @GetMapping("downloadFile/{filename:.+}")
   fun downloadFile(@PathVariable filename: String, request: HttpServletRequest): ResponseEntity<Resource> {
-    val resource = fileStorageService.loadFileAsResourc(filename)
+    val resource = fileStorageService.loadFileAsResource(filename)
     var contentType = ""
     try {
       contentType = request.servletContext.getMimeType(resource.file.absolutePath)

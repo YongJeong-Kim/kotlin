@@ -1,11 +1,16 @@
 package com.kyj.kotlinwebflux.domains.person
 
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.http.codec.multipart.FilePart
+import org.springframework.http.codec.multipart.Part
 import org.springframework.stereotype.Component
+import org.springframework.web.reactive.function.BodyExtractors
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.bodyToMono
+import java.io.File
 import java.net.URI
 
 @Component
@@ -28,5 +33,22 @@ data class PersonHandler(val personService: PersonService) {
       .flatMap {
         if (it) ServerResponse.ok().build()
         else ServerResponse.notFound().build()
+      }
+
+  fun home(serverRequest: ServerRequest) =
+    ServerResponse.ok().contentType(MediaType.TEXT_HTML).render("home")
+
+  fun imageUpload(serverRequest: ServerRequest) =
+    serverRequest.body(BodyExtractors.toMultipartData())
+      .flatMap { parts ->
+        val map: Map<String, Part> = parts.toSingleValueMap()
+        val filePart : FilePart = map["myImage"]!! as FilePart
+        // Note cast to "FilePart" above
+
+        // Save file to disk - in this example, in the "tmp" folder of a *nix system
+        val fileName = filePart.filename()
+        filePart.transferTo(File("C:\\Users\\Admin\\Desktop\\$fileName"))
+
+        ServerResponse.ok().body(BodyInserters.fromObject("OK"))
       }
 }
