@@ -9,8 +9,10 @@ logging:
   level:
     Exposed: DEBUG
 
-#graphql:
-#  servlet:
-#    enabled: true
-#    mapping: /graphql
-#    exception-handlers-enabled: true
+graphql:
+  servlet:
+    enabled: true
+    mapping: /graphql
+    exception-handlers-enabled: true
+  tools:
+    schema-location-pattern: /graphql/**/*.graphqls

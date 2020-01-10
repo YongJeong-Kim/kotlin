@@ -26,7 +26,8 @@ class UserRepositoryCustomImpl: UserRepositoryCustom {
       .map {
         UserDTO(
           id = it[Users.id],
-          name = it[Users.name] ?: "no name"
+          name = it[Users.name] ?: "no name",
+          age = it[Users.age]
         )
       }
 }
