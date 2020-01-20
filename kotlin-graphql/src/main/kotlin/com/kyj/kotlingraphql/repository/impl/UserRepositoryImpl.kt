@@ -1,6 +1,7 @@
 package com.kyj.kotlingraphql.repository.impl
 
 import com.kyj.kotlingraphql.dto.UserDTO
+import com.kyj.kotlingraphql.repository.UserRepository
 import com.kyj.kotlingraphql.repository.UserRepositoryCustom
 import com.kyj.kotlingraphql.table.Users
 import graphql.ExecutionResult
@@ -10,7 +11,7 @@ import org.jetbrains.exposed.sql.selectAll
 import org.springframework.stereotype.Repository
 
 @Repository
-class UserRepositoryCustomImpl: UserRepositoryCustom {
+class UserRepositoryImpl: UserRepository, UserRepositoryCustom {
   lateinit var graphQL: GraphQL
 
   override fun execute(query: String): ExecutionResult =

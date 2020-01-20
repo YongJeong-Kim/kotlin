@@ -1,0 +1,18 @@
+type Hobby {
+  id: Int
+  name: String
+  description: String
+}
+
+input HobbyInput {
+  name: String
+  description: String
+}
+
+extend type Query {
+  hobbies: [Hobby]
+}
+
+extend type Mutation {
+  newHobby(input: HobbyInput): Int
+}
