@@ -1,0 +1,5 @@
+mqtt:
+  ip: 192.168.0.56
+  port: 2224
+  username: web
+  password: 1234
