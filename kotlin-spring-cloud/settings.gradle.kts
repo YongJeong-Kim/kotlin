@@ -1,2 +1,2 @@
 rootProject.name = "kotlin-spring-cloud"
-include("eureka-server")
+include("eureka-server", "book-service", "gateway-service")
