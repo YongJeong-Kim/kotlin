@@ -2,6 +2,31 @@ spring:
   application:
     name: order-service
 
+book-service:
+  ribbon:
+    eureka:
+      enabled: false
+    listOfServers: book-service:9100,book-service:9110,book-service:9120
+
+logging:
+  level:
+    com.netflix: DEBUG
+    org.springframework.cloud: DEBUG
+
+#hystrix:
+#  command:
+#    default:
+#      circuitBreaker:
+#        requestVolumeThreshold: 10
+#        errorThresholdPercentage: 30
+#        sleepWindowInMilliseconds: 10000
+#      execution:
+#        isolation:
+#          thread:
+#            timeoutInMilliseconds: 1000
+#      metrics:
+#        rollingStats:
+#          timeInMilliseconds: 10000
 ---
 spring:
   profiles: zone1

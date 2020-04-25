@@ -5,10 +5,23 @@ spring:
 zuul:
   prefix: /api
   routes:
-    client:
+    bookservice:
       path: /book/**
       serviceId: book-service
+    orderservice:
+      path: /order/**
+      serviceId: order-service
+  host:
+    socket-timeout-millis: 20000
+    connect-timeout-millis: 20000
 
+bookservice:
+  ribbon:
+    listOfServers: http://book-service:9100, http://book-service:9110
+order-service:
+  ribbon:
+    ConnectTimout: 10000
+    ReadTimeout: 10000
 ribbon:
   eureka:
     enabled: true

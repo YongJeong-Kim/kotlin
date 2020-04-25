@@ -25,12 +25,14 @@ repositories {
 extra["springCloudVersion"] = "Hoxton.SR3"
 
 dependencies {
+  implementation("io.specto:hoverfly-java:0.12.3")
   implementation("org.springframework.boot:spring-boot-starter-web")
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
   implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
   implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+  implementation("org.springframework.cloud:spring-cloud-starter-netflix-hystrix")
   developmentOnly("org.springframework.boot:spring-boot-devtools")
   testImplementation("org.springframework.boot:spring-boot-starter-test") {
     exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
