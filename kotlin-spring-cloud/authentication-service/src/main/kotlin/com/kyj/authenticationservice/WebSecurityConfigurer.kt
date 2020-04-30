@@ -20,10 +20,10 @@ class WebSecurityConfigurer : WebSecurityConfigurerAdapter() {
     val encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder()
     auth!!.inMemoryAuthentication()
       .passwordEncoder(encoder)
-      .withUser("john.carnell").password(encoder.encode("password1"))
+      .withUser("kim").password(encoder.encode("1234"))
       .roles("USER")
       .and()
-      .withUser("william.woodward").password(encoder.encode("password2"))
+      .withUser("lee").password(encoder.encode("4321"))
       .roles("USER", "ADMIN")
   }
 }
